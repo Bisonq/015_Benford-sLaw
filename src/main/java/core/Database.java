@@ -10,8 +10,10 @@ public class Database {
     // 1 - 9
     private int[] arrayOfNumbers = new int[9];
 
-    public Database() throws IOException{
-        String filename="src/main/resources/cities_with_a_population_bigger_than_15000.txt";
+    private int numberOfRecords = 0;
+
+    public Database() throws IOException {
+        String filename = "src/main/resources/cities_with_a_population_bigger_than_15000.txt";
         Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_16)
                 .stream()
                 .map(e -> {
@@ -19,15 +21,22 @@ public class Database {
                     String[] elements = e.split("\\t");
                     return elements[1];
                 }).forEach(e -> {
-                    String firstDigit = e.substring(0, 1);
-                    int first = Integer.parseInt(firstDigit);
-                    if(first != 0) {
-                        arrayOfNumbers[first - 1]++;
-                    }
+            if (e.length() > 0) {
+                String firstDigit = e.substring(0, 1);
+                int first = Integer.parseInt(firstDigit);
+                if (first != 0) {
+                    this.numberOfRecords++;
+                    arrayOfNumbers[first - 1]++;
+                }
+            }
         });
     }
 
     public int[] getArrayOfNumbers() {
         return arrayOfNumbers;
+    }
+
+    public int getNumberOfRecords() {
+        return numberOfRecords;
     }
 }
